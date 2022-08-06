@@ -2,7 +2,7 @@
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class Main {
+public class Pomodoro {
 
     static boolean isTest = false;
 
@@ -22,7 +22,8 @@ public class Main {
         int breakMin = 5;
         // кол-во подходов
         int count = 1;
-
+        // множитель
+        int mult = 1;
         // длина рисунка progress bar
         int sizePrint = 30;
 
@@ -37,17 +38,23 @@ public class Main {
                 case "-w" -> workMin = Integer.parseInt(cmd[++i]);
                 case "-b" -> breakMin = Integer.parseInt(cmd[++i]);
                 case "-count" -> count = Integer.parseInt(cmd[++i]);
+                case "-m" -> mult = Integer.parseInt(cmd[++i]);
                 case "-t" -> isTest = true;
             }
         }
 
         if (!isCallHelp) {
             System.out.printf("Работаем %d min, " +
-                    "отдывахем %d min, кол-во подходов %d\n", workMin, breakMin, count);
+                    "отдывахем %d min, кол-во подходов %d, множитель %d\n", workMin, breakMin, count,mult);
             long startTime = System.currentTimeMillis();
-            for (int i = 1; i <= count; i++) {
-                timer(workMin, breakMin, sizePrint);
+            int i = 1;
+            int j=1;
+            do{
+                timer(workMin*j, breakMin, sizePrint);
+                i++;
+                j=j*mult;
             }
+            while (i <= count);
             long endTime = System.currentTimeMillis();
             System.out.println("Pomodoro таймер истек: " + (endTime - startTime)/(1000 * 60) + " min");
         }
